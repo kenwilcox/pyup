@@ -30,6 +30,13 @@ def check_config():
 		missing = 'smtp'
 	else:
 		ret = True
+
+	for key, value in vars(config).iteritems():
+		if not key.startswith("__") and not key.startswith("os"):
+			if value == None:
+				missing = key + " was set to None"
+				ret = False
+
 	return ret, missing
 
 def notify_user():
@@ -48,6 +55,8 @@ def main():
 		response = urllib2.urlopen(config.url, None, config.timeout)
 		#print dir(response)
 		print response.code, response.info()
+		# should check something other than the status code
+		# length, response time
 		if (not response.code == 200):
 			notify_user()
 		time.sleep(config.sleep)
@@ -59,4 +68,5 @@ if __name__ == "__main__":
 		main()
 		os.remove('./die')
 	else:
-		print "Something was missing from your configuration!", missing
+		print "Something was missing from your configuration!"
+		print missing
