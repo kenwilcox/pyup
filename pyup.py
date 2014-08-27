@@ -48,7 +48,7 @@ def main():
 		response = urllib2.urlopen(config.url, None, config.timeout)
 		#print dir(response)
 		print response.code, response.info()
-		if (not response.code == 404):
+		if (not response.code == 200):
 			notify_user()
 		time.sleep(config.sleep)
 		#
